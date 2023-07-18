@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-blog
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-blog
+  template:
+    metadata:
+      #annotations:
+      #  prometheus.io/scrape: "true"
+      #  prometheus.io/port: "9464"
+      #  prometheus.io/path: "/metrics"
+      labels:
+        app: app-blog
+    spec:
+      containers:
+      - name: app-blog
+        image: claudineysilva/app-k8s-monorepo-blog:1
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        env:
+        - name: MESSAGE
+          value: Hello Message
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-blog
+spec:
+  selector:
+    app: app-blog
+  type: LoadBalancer
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+      #nodePort: 30000
+      name: http
+    # - port: 9464
+    #   protocol: TCP
+    #   targetPort: 9464
+    #   #nodePort: 30000
+    #   name: metrics
