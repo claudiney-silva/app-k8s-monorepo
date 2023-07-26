@@ -56,7 +56,7 @@ module "app_k8s_monorepo_eks" {
     blog = {
       min_size     = 2
       max_size     = 3
-      desired_size  = 2
+      desired_size  = 3
 
       instance_types = ["t3.micro"]
     }
